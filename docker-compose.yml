@@ -1,25 +1,25 @@
-version: '3'
 services:
   nginx:
-    image: nginx:alpine
     container_name: dev-nginx
+    image: nginx:alpine
     ports:
       - "80:80"
     volumes:
-      - ./conf:/etc/nginx/conf.d:Z
-      - ./html:/usr/share/nginx/html:z
+      - ./nginx:/etc/nginx/conf.d:ro
+      - ./html:/var/www/html:z
     depends_on:
       - php
   php:
-    image: 'php:8.2-fpm'
-    # image: 'php:8.2-fpm-alpine'
     container_name: dev-php
+   # image: "php:8.2-fpm"
+   # image: "php:7.4-fpm-alpine"
+    image: 'php:8.2-fpm-alpine'
+    volumes:
+      - ./html:/var/www/html
     command: 'sh -c "docker-php-ext-install mysqli 
                 && php-fpm --nodaemonize" '
     ports:
         - "9000:9000"
-    volumes:
-      - ./html:/var/www/html
 
   mysql:
       image: mysql
