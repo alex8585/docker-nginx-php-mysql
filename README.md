@@ -1,4 +1,4 @@
 # docker-nginx-php-mysql
-
-1). Create .evn file (mv example.env .env)
-2). Put your php website code in html/wp2 or html/wp2 or etc.
+## install
+- 1). Create .evn file (cp example.env .env)
+- 2). Put your php website in html/wp1 or html/wp2 directory or etc.
