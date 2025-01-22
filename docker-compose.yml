@@ -1,0 +1,55 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: dev-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./conf:/etc/nginx/conf.d:Z
+      - ./html:/usr/share/nginx/html:z
+    depends_on:
+      - php
+  php:
+    image: 'php:8.2-fpm'
+    # image: 'php:8.2-fpm-alpine'
+    container_name: dev-php
+    command: 'sh -c "docker-php-ext-install mysqli 
+                && php-fpm --nodaemonize" '
+    ports:
+        - "9000:9000"
+    volumes:
+      - ./html:/var/www/html
+
+  mysql:
+      image: mysql
+      container_name: dev-mysql
+      restart: always
+      env_file:
+          - ".env"
+      environment:
+          - MYSQL_DATABASE=${MYSQL_DATABASE}
+          - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+          - MYSQL_USER=${MYSQL_USER}
+          - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      ports:
+          - "3306:3306"
+      volumes:
+        - "./mysql:/var/lib/mysql:Z"
+  myadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: dev-myadmin
+      ports:
+          - "8080:80"
+      environment:
+          - PMA_ARBITRARY=1
+          - PMA_HOST=${MYSQL_HOST}
+      restart: always
+      depends_on:
+          - mysql
+
+volumes:
+  html:
+  conf:
+  mysql:
+
