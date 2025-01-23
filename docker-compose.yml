@@ -11,13 +11,13 @@ services:
       - php
   php:
     container_name: dev-php
-   # image: "php:8.2-fpm"
-   # image: "php:7.4-fpm-alpine"
-    image: 'php:8.2-fpm-alpine'
+    build:
+      context: ./mysqli_php
+      dockerfile: Dockerfile
     volumes:
       - ./html:/var/www/html
-    command: 'sh -c "docker-php-ext-install mysqli 
-                && php-fpm --nodaemonize" '
+    # command: 'sh -c "docker-php-ext-install mysqli 
+                # && php-fpm --nodaemonize" '
     ports:
         - "9000:9000"
 
