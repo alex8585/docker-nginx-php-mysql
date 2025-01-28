@@ -48,6 +48,17 @@ services:
       depends_on:
           - mysql
 
+  mysqld-exporter:
+      image: prom/mysqld-exporter:latest
+      container_name: mysqld-exporter
+      command:
+        - "--mysqld.username=${MYSQL_USER}:${MYSQL_ROOT_PASSWORD}" 
+        - "--mysqld.address=${MYSQL_HOST}:3306"
+      ports:
+        - "9104:9104"
+      depends_on:
+        - mysql
+
 volumes:
   html:
   conf:
