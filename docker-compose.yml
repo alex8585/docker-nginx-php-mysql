@@ -6,7 +6,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx:/etc/nginx/conf.d:ro
-      - ./html:/var/www/html:z
+      - ./html:/var/www/html:Z
     depends_on:
       - php
   php:
@@ -42,8 +42,11 @@ services:
       ports:
           - "8080:80"
       environment:
-          - PMA_ARBITRARY=1
           - PMA_HOST=${MYSQL_HOST}
+          - PMA_PORT=3306
+          - PMA_USER=${MYSQL_ROOT_USER}
+          - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
+          - PMA_ARBITRARY=1
       restart: always
       depends_on:
           - mysql
